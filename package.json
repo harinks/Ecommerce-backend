@@ -1,7 +1,7 @@
 {
-  "name": "Ecommerce-shop-server",
+  "name": "Ecommerce-store-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "backend for ecommerce website",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

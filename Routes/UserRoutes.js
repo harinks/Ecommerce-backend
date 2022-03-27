@@ -1,6 +1,7 @@
 const userRouter = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const protect = require("../Middleware/AuthMiddleware");
+const admin = require("../Middleware/AuthMiddleware");
 const generateToken = require("../utils/generateToken");
 const User = require("./../Models/UserModel");
 
@@ -109,6 +110,17 @@ userRouter.put(
       res.status(404);
       throw new Error("User not found");
     }
+  })
+);
+
+// GET ALL USER ADMIN
+userRouter.get(
+  "/",
+  protect,
+  admin,
+  asyncHandler(async (req, res) => {
+    const users = await User.find({});
+    res.json(users);
   })
 );
 

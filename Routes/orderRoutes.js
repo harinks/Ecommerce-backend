@@ -2,6 +2,7 @@ const orderRouter = require("express").Router();
 const asyncHandler = require("express-async-handler");
 const protect = require("../Middleware/AuthMiddleware");
 const Order = require("./../Models/OrderModel");
+const admin = require("../Middleware/AuthMiddleware");
 
 // CREATE ORDER
 orderRouter.post(
@@ -37,6 +38,19 @@ orderRouter.post(
       const createOrder = await order.save();
       res.status(201).json(createOrder);
     }
+  })
+);
+
+// ADMIN GET ALL ORDERS
+orderRouter.get(
+  "/all",
+  protect,
+  admin,
+  asyncHandler(async (req, res) => {
+    const orders = await Order.find({})
+      .sort({ _id: -1 })
+      .populate("user", "id name email");
+    res.json(orders);
   })
 );
 
@@ -85,6 +99,26 @@ orderRouter.put(
         update_time: req.body.update_time,
         email_address: req.body.email_address,
       };
+
+      const updatedOrder = await order.save();
+      res.json(updatedOrder);
+    } else {
+      res.status(404);
+      throw new Error("Order Not Found");
+    }
+  })
+);
+
+// ORDER IS PAID
+orderRouter.put(
+  "/:id/delivered",
+  protect,
+  asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+      order.isDelivered = true;
+      order.deliveredAt = Date.now();
 
       const updatedOrder = await order.save();
       res.json(updatedOrder);

@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDatabase = require('./config/MongoDb');
-const ImportData = require('./DataImport');
+//const ImportData = require('./DataImport');
 const productRoute = require ("./Routes/ProductRoutes");
 const { errorHandler, notFound } = require ("./Middleware/Errors");
 const userRouter = require ("./Routes/UserRoutes");
@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 // API
-app.use("/api/import", ImportData);
+//app.use("/api/import", ImportData);
 app.use("/api/products", productRoute);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
